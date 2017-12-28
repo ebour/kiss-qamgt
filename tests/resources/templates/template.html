@@ -127,32 +127,32 @@
             </script>
           </div>
         </div>
-        <dib class="row">
-          <div class="col-md-6">
+
+        {% for test_group in query("get_test_groups") %}
+        <div class="row">
+          <div class="col-md-12">
             <div class="title">
-              <h5>Group details </h5>
+              <h5>Testcases  status</h5>
             </div>
-            <table class="testcases table-striped">
-            {% for testcase in query("get_test_plans") %}
-              {% if testcase.status == 'FAILED' %}
-                {% set class = 'danger' %}
-              {% elif testcase.status == 'PASSED' %}
-                {% set class = 'success' %}
-              {% elif testcase.status == 'BLOCKED' %}
-                {% set class = 'warning' %}
-              {% elif testcase.status == 'NOT RUN' %}
-                {% set class = 'active' %}
-              {% endif %}
-              <tr class="testcase {{ class }}">
-                <td>{{ testcase.id }}</td>
-                <td>{{ testcase.name }}</td>
-                <td>{{ testcase.status }}</td>
-              </tr>
-            {% endfor %}
-            </table>
+              <table class="testcases table table-striped">
+                <tr>
+                  <th><p>label</p></th>
+                  {% for test_type in query("get_test_types", test_group.name) %}
+                  <th><p>{{ test_type.name }}</p></th>
+                  {% endfor %}
+                </tr>
+                <tr>
+                  <td><p>{{ test_group.name }}</p></td>
+                {% for test_case in query("get_test_cases", test_group.name) %}
+                  <td><p>{{ test_case.status }}</p></td>
+                {% endfor %}
+                </tr>
+              </table>
           </div>
         </div>
+        {% endfor %}
         {% endblock %}
+
       </div>
     </div>
   </body>

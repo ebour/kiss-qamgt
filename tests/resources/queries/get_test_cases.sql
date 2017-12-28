@@ -1,0 +1,1 @@
+SELECT status, testplan.[group], testplan.name, testplan.id from testplan LEFT JOIN types on testplan.type == types.name WHERE testplan.[group] == '%s' AND date in (select max(date) as date from testplan) ORDER BY types.[order] ASC;

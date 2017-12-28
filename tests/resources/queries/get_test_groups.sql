@@ -1,0 +1,1 @@
+SELECT distinct testplan.[group] as name FROM testplan LEFT JOIN groups where groups.name == testplan.[group] ORDER BY [order] ASC;

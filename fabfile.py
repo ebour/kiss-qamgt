@@ -32,9 +32,10 @@ def query(query_filename, args=None):
         query = query_file.readline()
     if args:
         query = query % (args)
+
+    print(query_filename + '->' + query)
     data = pdsql.PandaSQL()(query, globals()['env'])
     dict = data.to_dict('records')
-
     print(dict)
     return dict
 

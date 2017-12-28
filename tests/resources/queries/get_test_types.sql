@@ -1,0 +1,1 @@
+SELECT distinct type as name from testplan LEFT JOIN types on testplan.type == types.name WHERE [group] == '%s' ORDER BY [order] ASC;
