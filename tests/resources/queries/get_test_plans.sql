@@ -1,1 +1,1 @@
-select * from testplan where id not in (1);
+select distinct id, name, description, status from testplan where id not in (1);

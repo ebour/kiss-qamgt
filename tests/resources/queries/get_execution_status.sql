@@ -1,0 +1,1 @@
+SELECT status as label, count(*) as total FROM testplan WHERE status IN ('PASSED', 'FAILED', 'NOT RUN', 'BLOCKED') AND date in (select max(date) as date from testplan) GROUP BY status

@@ -1,0 +1,1 @@
+SELECT assignee, sum(workload) as workload FROM testplan WHERE status IN ('FAILED', 'NOT RUN', 'BLOCKED') AND date in (SELECT max(date) FROM testplan) GROUP BY (assignee)

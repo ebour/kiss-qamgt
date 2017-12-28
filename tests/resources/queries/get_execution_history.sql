@@ -1,0 +1,1 @@
+SELECT date, count(*) as total FROM testplan WHERE status IN ('PASSED') GROUP BY date ORDER BY date ASC
