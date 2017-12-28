@@ -1,8 +1,6 @@
 import argparse
 import csv
 import os
-import uuid
-from pprint import pprint
 
 import pandas as pd
 import pandasql as pdsql
