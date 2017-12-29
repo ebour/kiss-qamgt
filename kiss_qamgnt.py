@@ -37,6 +37,13 @@ def query(query_filename, args=None):
     print(dict)
     return dict
 
+
+def render(template_name):
+    env = globals()['ENVIRONMENT']
+    template = env.get_template(template_name)
+    report = template.render()
+    return report
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process some csv file to html/pdf report files.')
     parser.add_argument('-i', type=str, help='input')
@@ -51,7 +58,7 @@ if __name__ == '__main__':
     globals()['TEMPLATES_DIR'] = os.path.abspath(args.td)
 
     env = Environment(loader=FileSystemLoader(globals()['TEMPLATES_DIR']), autoescape=select_autoescape(['html', 'xml']))
-    template = env.get_template(args.t)
+    globals()['ENVIRONMENT'] = env
 
     env = env.globals
     input_dir = os.path.abspath(args.i)
@@ -66,8 +73,11 @@ if __name__ == '__main__':
         os.makedirs(report_dir, exist_ok=True)
 
     env['query'] = query
+    # env['render'] = render
     globals()['env'] = env
-    report = template.render()
+
+    template_name = args.t
+    report = render(template_name)
 
     report_filepath = os.path.abspath(args.o)
     with open(report_filepath, 'w') as file:

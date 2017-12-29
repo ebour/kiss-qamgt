@@ -1,1 +1,1 @@
-SELECT status, testplan.[group], testplan.name, testplan.id from testplan LEFT JOIN types on testplan.type == types.name WHERE testplan.[group] == '%s' AND date in (select max(date) as date from testplan) ORDER BY types.[order] ASC;
+SELECT distinct status, testplan.[group], testplan.subgroup, testplan.subsubgroup, testplan.name, testplan.id from testplan LEFT JOIN subgroups on testplan.subgroup == subgroups.name WHERE testplan.[group] == '%s' AND testplan.subgroup == '%s' AND date in (select max(date) as date from testplan) ORDER BY subgroups.[order] ASC;

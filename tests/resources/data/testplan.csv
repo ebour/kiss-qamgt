@@ -1,19 +1,11 @@
-date,id,group,type,name,description,status,assignee,workload
-2017/12/25,1,g1,x,name1,desc1,NOT RUN,A,4
-2017/12/25,2,g1,y,name2,desc2,PASSED,B,4
-2017/12/25,3,g1,z,name3,desc3,FAILED,C,4
-2017/12/25,4,g2,x,name4,desc4,BLOCKED,D,4
-2017/12/25,5,g2,y,name5,desc4,BLOCKED,E,4
-2017/12/25,6,g2,z,name6,desc4,BLOCKED,E,1
-2017/12/26,1,g1,x,name1,desc1,NOT RUN,A,4
-2017/12/26,2,g1,y,name2,desc2,FAILED,B,4
-2017/12/26,3,g1,z,name3,desc3,BLOCKED,C,4
-2017/12/26,4,g2,x,name4,desc4,BLOCKED,D,4
-2017/12/26,5,g2,y,name5,desc4,BLOCKED,E,4
-2017/12/26,6,g2,z,name6,desc4,NOT RUN,E,1
-2017/12/27,1,g1,x,name1,desc1,PASSED,A,4
-2017/12/27,2,g1,y,name2,desc2,PASSED,B,4
-2017/12/27,3,g1,z,name3,desc3,PASSED,C,4
-2017/12/27,4,g2,x,name4,desc4,PASSED,D,4
-2017/12/27,5,g2,y,name5,desc4,PASSED,E,4
-2017/12/27,6,g2,z,name6,desc4,PASSED,E,1
+date,id,group,subgroup,subsubgroup,name,description,status,assignee,workload
+2017/12/25,1,group1,subgroup1,subsubgroup1,name1,desc1,NOT RUN,A,4
+2017/12/25,2,group1,subgroup1,subsubgroup2,name2,desc2,PASSED,B,4
+2017/12/25,3,group1,subgroup1,subsubgroup3,name3,desc3,FAILED,C,4
+2017/12/25,4,group1,subgroup2,subsubgroup1,name4,desc4,BLOCKED,D,4
+2017/12/25,5,group1,subgroup2,subsubgroup2,name5,desc4,BLOCKED,E,4
+2017/12/25,6,group1,subgroup2,subsubgroup3,name1,desc1,NOT RUN,A,4
+2017/12/25,7,group2,subgroup3,subsubgroup3,name2,desc2,PASSED,B,4
+2017/12/25,8,group2,subgroup4,subsubgroup4,name3,desc3,FAILED,C,4
+2017/12/25,9,group2,subgroup3,subsubgroup3,name4,desc4,BLOCKED,D,4
+2017/12/25,10,group2,subgroup4,subsubgroup4,name5,desc4,BLOCKED,E,4

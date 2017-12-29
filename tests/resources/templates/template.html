@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Quality Management Report</title>
+    <title center-block>Quality Management Report</title center-block>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -132,19 +132,21 @@
         <div class="row">
           <div class="col-md-12">
             <div class="title">
-              <h5>Testcases  status</h5>
+              <h5>{{ test_group.name }} status</h5>
             </div>
               <table class="testcases table table-striped">
                 <tr>
                   <th><p>label</p></th>
-                  {% for test_type in query("get_test_types", test_group.name) %}
-                  <th><p>{{ test_type.name }}</p></th>
+                  {% for test_subsubgroup in query("get_test_subsubgroups", test_group.name) %}
+                  <th><p>{{ test_subsubgroup.name }}</p></th>
                   {% endfor %}
                 </tr>
+                {% for test_subgroup in query("get_test_subgroups", test_group.name) %}
                 <tr>
-                  <td><p>{{ test_group.name }}</p></td>
-                {% for test_case in query("get_test_cases", test_group.name) %}
+                  <td><p>{{ test_subgroup.name }}</p></td>
+                {% for test_case in query("get_test_cases", (test_group.name, test_subgroup.name)) %}
                   <td><p>{{ test_case.status }}</p></td>
+                {% endfor %}
                 {% endfor %}
                 </tr>
               </table>

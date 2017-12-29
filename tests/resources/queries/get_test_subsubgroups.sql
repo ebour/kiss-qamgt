@@ -1,0 +1,1 @@
+SELECT distinct subsubgroup as name from testplan LEFT JOIN subgroups on testplan.subgroup == subgroups.name WHERE [group] == '%s' ORDER BY [order] ASC;

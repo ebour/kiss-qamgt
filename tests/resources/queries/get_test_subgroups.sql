@@ -1,0 +1,1 @@
+SELECT distinct testplan.[subgroup] as name FROM testplan LEFT JOIN subgroups where subgroups.name == testplan.[subgroup] AND testplan.[group] == '%s' ORDER BY [order] ASC;
