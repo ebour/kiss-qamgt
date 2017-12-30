@@ -1,1 +1,1 @@
-SELECT date, sum(workload) as workload FROM testplan WHERE status IN ('PASSED') GROUP BY date ORDER BY date ASC
+SELECT date, sum(workload)/6 as workload FROM testplan WHERE status NOT IN ('PASSED') GROUP BY date ORDER BY date ASC

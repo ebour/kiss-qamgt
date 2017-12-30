@@ -7,16 +7,22 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <meta charset="utf-8">
-    <script>
-
-    </script>
+    <style>
+        body {
+            background-color: #fefefe;
+        }
+        .col-centered {
+            float: none;
+            margin: 0 auto;
+        }
+    </style>
   </head>
   <body>
     <div class="container">
       <div class="row">
         {% block content %}
           <div class="col-md-6">
-            <div class="title">
+            <div class="col-lg-3 col-centered">
               <h5>Execution status</h5>
             </div>
             <canvas id="execution-status-chart"></canvas>
@@ -52,30 +58,34 @@
             });
           </script>
           <div class="col-md-6">
-            <div class="title">
+            <div class="col-lg-3 col-centered">
               <h5>Execution history</h5>
             </div>
             <canvas id="execution-history-chart"></canvas>
             <script>
               var _data = [];
+              var _labels = [];
               {% for result in query("get_execution_history") %}
-                _data.push({x: '{{ result.date }}', y: {{ result.total }}});
+                _data.push({{ result.total }});
+                _labels.push('{{result.date}}');
               {% endfor %}
 
               var data = {
+                  labels: _labels,
                   datasets: [{ data: _data, label: 'Execution History'}],
               };
 
               var chart = new Chart($('#execution-history-chart'), {
                   type: 'line',
-                  data: data
-              })
+                  data: data,
+                  scaleStartValue: 0
+              });
             </script>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
-            <div class="title">
+            <div class="col-lg-3 col-centered">
               <h5>Workload status</h5>
             </div>
             <canvas id="assignee-workload-chart"></canvas>
@@ -101,28 +111,34 @@
 
               var chart = new Chart($('#assignee-workload-chart'), {
                   type: 'radar',
-                  data: data
+                  data: data,
+                  scaleStepWidth: 1,
+                  scaleStartValue: 0
               });
             </script>
           </div>
           <div class="col-md-6">
-            <div class="title">
+            <div class="col-lg-3 col-centered">
               <h5>Workload history</h5>
             </div>
             <canvas id="workload-history-chart"></canvas>
             <script>
               var _data = [];
+              var _labels = [];
               {% for result in query("get_workload_history") %}
-                _data.push({x: '{{ result.date }}', y: {{ result.workload }}});
+                _data.push({{ result.workload }});
+                _labels.push('{{result.date}}');
               {% endfor %}
 
               var data = {
+                  labels: _labels,
                   datasets: [{ data: _data, label: 'Workload History'}],
               };
 
               var chart = new Chart($('#workload-history-chart'), {
                   type: 'line',
-                  data: data
+                  data: data,
+                  scaleStartValue: 0
               })
             </script>
           </div>
@@ -131,10 +147,10 @@
         {% for test_group in query("get_test_groups") %}
         <div class="row">
           <div class="col-md-12">
-            <div class="title">
-              <h5>{{ test_group.name }} status</h5>
+            <div class="col-lg-12 col-centered">
+              <h4>{{ test_group.name }} status</h4>
             </div>
-              <table class="testcases table table-striped">
+              <table class="testcases table">
                 <tr>
                   <th><p>label</p></th>
                   {% for test_subsubgroup in query("get_test_subsubgroups", test_group.name) %}
@@ -153,6 +169,7 @@
           </div>
         </div>
         {% endfor %}
+
         {% endblock %}
 
       </div>
