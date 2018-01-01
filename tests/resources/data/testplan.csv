@@ -1,31 +1,31 @@
-date,id,group,subgroup,subsubgroup,name,description,status,assignee,workload
-2017/12/25,1,group1,subgroup1,subsubgroup1,name1,desc1,NOT RUN,A,4
-2017/12/25,2,group1,subgroup1,subsubgroup2,name2,desc2,NOT RUN,B,4
-2017/12/25,3,group1,subgroup1,subsubgroup3,name3,desc3,NOT RUN,C,4
-2017/12/25,4,group1,subgroup2,subsubgroup1,name4,desc4,NOT RUN,D,4
-2017/12/25,5,group1,subgroup2,subsubgroup2,name5,desc4,NOT RUN,E,2
-2017/12/25,6,group1,subgroup2,subsubgroup3,name1,desc1,NOT RUN,A,2
-2017/12/25,7,group2,subgroup3,subsubgroup3,name2,desc2,NOT RUN,B,2
-2017/12/25,8,group2,subgroup4,subsubgroup4,name3,desc3,NOT RUN,C,2
-2017/12/25,9,group2,subgroup3,subsubgroup3,name4,desc4,NOT RUN,D,2
-2017/12/25,10,group2,subgroup4,subsubgroup4,name5,desc4,NOT RUN,E,2
-2017/12/26,1,group1,subgroup1,subsubgroup1,name1,desc1,PASSED,A,4
-2017/12/26,2,group1,subgroup1,subsubgroup2,name2,desc2,FAILED,B,4
-2017/12/26,3,group1,subgroup1,subsubgroup3,name3,desc3,NOT RUN,C,4
-2017/12/26,4,group1,subgroup2,subsubgroup1,name4,desc4,NOT RUN,D,4
-2017/12/26,5,group1,subgroup2,subsubgroup2,name5,desc4,NOT RUN,E,2
-2017/12/26,6,group1,subgroup2,subsubgroup3,name1,desc1,NOT RUN,A,2
-2017/12/26,7,group2,subgroup3,subsubgroup3,name2,desc2,PASSED,B,2
-2017/12/26,8,group2,subgroup4,subsubgroup4,name3,desc3,NOT RUN,C,2
-2017/12/26,9,group2,subgroup3,subsubgroup3,name4,desc4,NOT RUN,D,2
-2017/12/26,10,group2,subgroup4,subsubgroup4,name5,desc4,NOT RUN,E,2
-2017/12/27,1,group1,subgroup1,subsubgroup1,name1,desc1,PASSED,A,4
-2017/12/27,2,group1,subgroup1,subsubgroup2,name2,desc2,PASSED,B,4
-2017/12/27,3,group1,subgroup1,subsubgroup3,name3,desc3,BLOCKED,C,4
-2017/12/27,4,group1,subgroup2,subsubgroup1,name4,desc4,NOT RUN,D,4
-2017/12/27,5,group1,subgroup2,subsubgroup2,name5,desc4,PASSED,E,2
-2017/12/27,6,group1,subgroup2,subsubgroup3,name1,desc1,PASSED,A,2
-2017/12/27,7,group2,subgroup3,subsubgroup3,name2,desc2,PASSED,B,2
-2017/12/27,8,group2,subgroup4,subsubgroup4,name3,desc3,NOT RUN,C,2
-2017/12/27,9,group2,subgroup3,subsubgroup3,name4,desc4,PASSED,D,2
-2017/12/27,10,group2,subgroup4,subsubgroup4,name5,desc4,PASSED,E,2
+date,id,group,subgroup,subsubgroup,name,description,status,assignee,workload,link
+2017/12/25,1,group1,subgroup1,subsubgroup1,name1,desc1,NOT RUN,A,4,http://foo/1
+2017/12/25,2,group1,subgroup1,subsubgroup2,name2,desc2,NOT RUN,B,4,http://foo/2
+2017/12/25,3,group1,subgroup1,subsubgroup3,name3,desc3,NOT RUN,C,4,http://foo/3
+2017/12/25,4,group1,subgroup2,subsubgroup1,name4,desc4,NOT RUN,D,4,http://foo/4
+2017/12/25,5,group1,subgroup2,subsubgroup2,name5,desc4,NOT RUN,E,2,http://foo/5
+2017/12/25,6,group1,subgroup2,subsubgroup3,name1,desc1,NOT RUN,F,2,http://foo/6
+2017/12/25,7,group2,subgroup3,subsubgroup3,name2,desc2,NOT RUN,G,2,http://foo/7
+2017/12/25,8,group2,subgroup4,subsubgroup4,name3,desc3,NOT RUN,H,2,http://foo/8
+2017/12/25,9,group2,subgroup3,subsubgroup3,name4,desc4,NOT RUN,I,2,http://foo/9
+2017/12/25,10,group2,subgroup4,subsubgroup4,name5,desc4,NOT RUN,J,2,http://foo/10
+2017/12/26,1,group1,subgroup1,subsubgroup1,name1,desc1,PASSED,A,4,http://foo/1
+2017/12/26,2,group1,subgroup1,subsubgroup2,name2,desc2,FAILED,B,4,http://foo/2
+2017/12/26,3,group1,subgroup1,subsubgroup3,name3,desc3,NOT RUN,C,4,http://foo/3
+2017/12/26,4,group1,subgroup2,subsubgroup1,name4,desc4,NOT RUN,D,4,http://foo/4
+2017/12/26,5,group1,subgroup2,subsubgroup2,name5,desc4,NOT RUN,E,2,http://foo/5
+2017/12/26,6,group1,subgroup2,subsubgroup3,name1,desc1,NOT RUN,F,2,http://foo/6
+2017/12/26,7,group2,subgroup3,subsubgroup3,name2,desc2,PASSED,G,2,http://foo/7
+2017/12/26,8,group2,subgroup4,subsubgroup4,name3,desc3,NOT RUN,H,2,http://foo/8
+2017/12/26,9,group2,subgroup3,subsubgroup3,name4,desc4,NOT RUN,I,2,http://foo/9
+2017/12/26,10,group2,subgroup4,subsubgroup4,name5,desc4,NOT RUN,J,2,http://foo/10
+2017/12/27,1,group1,subgroup1,subsubgroup1,name1,desc1,PASSED,A,4,http://foo/1
+2017/12/27,2,group1,subgroup1,subsubgroup2,name2,desc2,PASSED,B,4,http://foo/2
+2017/12/27,3,group1,subgroup1,subsubgroup3,name3,desc3,BLOCKED,C,4,http://foo/3
+2017/12/27,4,group1,subgroup2,subsubgroup1,name4,desc4,FAILED,D,4,http://foo/4
+2017/12/27,5,group1,subgroup2,subsubgroup2,name5,desc4,PASSED,E,2,http://foo/5
+2017/12/27,6,group1,subgroup2,subsubgroup3,name1,desc1,PASSED,F,2,http://foo/6
+2017/12/27,7,group2,subgroup3,subsubgroup3,name2,desc2,PASSED,G,2,http://foo/7
+2017/12/27,8,group2,subgroup4,subsubgroup4,name3,desc3,NOT RUN,H,2,http://foo/8
+2017/12/27,9,group2,subgroup3,subsubgroup3,name4,desc4,PASSED,I,2,http://foo/9
+2017/12/27,10,group2,subgroup4,subsubgroup4,name5,desc4,PASSED,J,2,http://foo/10

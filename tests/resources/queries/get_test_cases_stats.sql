@@ -1,0 +1,1 @@
+SELECT count(status) as [count], status from testplan LEFT JOIN status on testplan.status == status.name WHERE testplan.[group] == '%s' AND date in (select max(date) as date from testplan) GROUP BY status.name ORDER BY status.[order] ASC;

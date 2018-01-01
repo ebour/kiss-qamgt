@@ -1,0 +1,1 @@
+SELECT count(id) as total FROM testplan WHERE testplan.[group] == '%s' AND date in (select max(date) as date from testplan);

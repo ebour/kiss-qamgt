@@ -1,0 +1,1 @@
+SELECT sum(workload) as total FROM testplan WHERE date in (select max(date) as date from testplan);

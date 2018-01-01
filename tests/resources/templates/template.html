@@ -15,12 +15,33 @@
             float: none;
             margin: 0 auto;
         }
+        th p, td p {
+            text-align: center;
+            margin: 0 0 2px;
+        }
+        th {
+            background-color: #f3f3f3;
+        }
     </style>
+    <script>
+      {% for result in query("get_release_date") %}
+      var release_date = new Date('{{ result.releasedate }}');
+      {% endfor %}
+      var NB_MS_PER_DAY = 24*3600*1000;
+      var current_time = new Date().setHours(0, 0, 0, 0);
+      var diff = release_date.getTime() -current_time;
+      var duration = diff/NB_MS_PER_DAY;
+    </script>
   </head>
   <body>
     <div class="container">
       <div class="row">
         {% block content %}
+          <div class="col-md-12">
+            <div class="col-lg-3 col-centered">
+              <h5 id="duration"></h5>
+            </div>
+          </div>
           <div class="col-md-6">
             <div class="col-lg-3 col-centered">
               <h5>Execution status</h5>
@@ -63,22 +84,36 @@
             </div>
             <canvas id="execution-history-chart"></canvas>
             <script>
-              var _data = [];
+              var actual_data = [];
+              var expected_data = [];
+
               var _labels = [];
+              {% for test_cases_stats in query("get_test_cases_count") %}
+              var total = {{ test_cases_stats.total }};
+              {% endfor %}
               {% for result in query("get_execution_history") %}
-                _data.push({{ result.total }});
+                actual_data.push({{ result.total }});
+                expected_data.push(total-(expected_data.length*total/duration));
                 _labels.push('{{result.date}}');
               {% endfor %}
 
+              for(idx=expected_data.length-1;idx<duration;idx++) {
+                time = new Date(_labels[idx]).getTime() + NB_MS_PER_DAY;
+                date = new Date(time);
+                expected_data.push(total-(expected_data.length*total/duration));
+                _labels.push(date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate())
+              }
+
               var data = {
                   labels: _labels,
-                  datasets: [{ data: _data, label: 'Execution History'}],
+                  datasets: [{data: actual_data, label: 'Actual Execution (# tests)', fill: false, borderColor: 'rgba(92, 184, 92, 0.8)'},
+                             {data: expected_data, label: 'Ideal Execution (# tests)', fill: false, borderColor: 'rgba(240, 173, 78, 0.8)'}],
               };
 
               var chart = new Chart($('#execution-history-chart'), {
                   type: 'line',
                   data: data,
-                  scaleStartValue: 0
+                  scaleStartValue: 0,
               })
             </script>
           </div>
@@ -106,7 +141,7 @@
 
               var data = {
                   labels: _labels,
-                  datasets: [{ label: 'Workload', data: _data}],
+                  datasets: [{ label: 'Workload (hours)', data: _data}],
               };
 
               var chart = new Chart($('#assignee-workload-chart'), {
@@ -123,22 +158,37 @@
             </div>
             <canvas id="workload-history-chart"></canvas>
             <script>
-              var _data = [];
+              var actual_data = [];
+              var expected_data = [];
               var _labels = [];
+
+              {% for test_cases_stats in query("get_test_cases_workload") %}
+              var total = {{ test_cases_stats.total }};
+              {% endfor %}
+
               {% for result in query("get_workload_history") %}
-                _data.push({{ result.workload }});
+                actual_data.push({{ result.workload }});
+                expected_data.push(total-(expected_data.length*total/duration));
                 _labels.push('{{result.date}}');
               {% endfor %}
 
+              for(idx=expected_data.length-1;idx<duration;idx++) {
+                time = new Date(_labels[idx]).getTime() + NB_MS_PER_DAY;
+                date = new Date(time);
+                expected_data.push(total-(expected_data.length*total/duration));
+                _labels.push(date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate())
+              }
+
               var data = {
                   labels: _labels,
-                  datasets: [{ data: _data, label: 'Workload History'}],
+                  datasets: [{data: actual_data, label: 'Actual Execution (hours)', fill: false, borderColor: 'rgba(92, 184, 92, 0.8)'},
+                             {data: expected_data, label: 'Ideal Execution (hours)', fill: false, borderColor: 'rgba(240, 173, 78, 0.8)'}],
               };
 
               var chart = new Chart($('#workload-history-chart'), {
                   type: 'line',
                   data: data,
-                  scaleStartValue: 0
+                  scaleStartValue: 0,
               })
             </script>
           </div>
@@ -147,10 +197,28 @@
         {% for test_group in query("get_test_groups") %}
         <div class="row">
           <div class="col-md-12">
-            <div class="col-lg-12 col-centered">
+            <div class="col-md-3">
               <h4>{{ test_group.name }} status</h4>
+              <table class="testcases table table-bordered">
+                <tr>
+                  <th><p>status</p></th>
+                  <th><p>count</p></th>
+                </tr>
+              {% for test_case in query("get_test_cases_count_per_group", test_group.name) %}
+                <tr><td><p>TOTAL</p></td><td><p>{{ test_case.total }}</p></td></tr>
+              {% endfor %}
+              {% for test_case in query("get_test_cases_stats", test_group.name) %}
+                <tr><td><p>{{ test_case.status }}</p></td><td><p>{{ test_case.count }}</p></td></tr>
+              {% endfor %}
+              </table>
             </div>
-              <table class="testcases table">
+            <div class="col-md-9">
+              <h4>{{ test_group.name }} conclusion</h4>
+            </div>
+
+            <div class="col-md-12">
+              <h4>{{ test_group.name }} details</h4>
+              <table class="testcases col-md-12 table table-bordered">
                 <tr>
                   <th><p>label</p></th>
                   {% for test_subsubgroup in query("get_test_subsubgroups", test_group.name) %}
@@ -161,18 +229,36 @@
                 <tr>
                   <td><p>{{ test_subgroup.name }}</p></td>
                 {% for test_case in query("get_test_cases", (test_group.name, test_subgroup.name)) %}
-                  <td><p>{{ test_case.status }}</p></td>
+                  <td><p><a href="{{test_case.link}}">{{ test_case.status }}</a></p></td>
                 {% endfor %}
                 {% endfor %}
                 </tr>
               </table>
+            </div>
           </div>
         </div>
         {% endfor %}
 
         {% endblock %}
-
-      </div>
     </div>
   </body>
+  <script>
+    $(document).ready(function() {
+        var row = '';
+        $('.table.testcases tr').each(function(idx, tr) {
+            row = $(tr).text();
+            if(row.indexOf("FAILED")!=-1) {
+                $(tr).addClass('danger');
+            } else if(row.indexOf("BLOCKED")!=-1) {
+                $(tr).addClass('warning');
+            } else if(row.indexOf("NOT RUN")!=-1) {
+                $(tr).addClass('active');
+            } else if(row.indexOf("PASSED")!=-1) {
+                $(tr).addClass('success');
+            }
+        });
+
+        $("#duration").val(duration + " remaining days");
+    });
+  </script>
 </html>
