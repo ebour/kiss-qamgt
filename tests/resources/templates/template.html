@@ -6,6 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js"></script>
     <meta charset="utf-8">
     <style>
         body {
@@ -22,6 +23,47 @@
         th {
             background-color: #f3f3f3;
         }
+        h5 {
+          font-weight: bold;
+        }
+        #title {
+          text-align: center;
+        }
+        .script {
+          font-family: "Seaweed Script";
+          text-align: center;
+          font-size: 20px;
+          position: relative;
+          margin:0;
+        }
+        .script span {
+          padding: 0 0.3em;
+          background-color: #fefefe;
+        }
+        .script:before {
+          content:"";
+          display: block;
+          position: absolute;
+          z-index:-1;
+          top: 50%;
+          width: 100%;
+          border-bottom: 3px solid;
+        }
+        .text1 {
+          font-size: 20px;
+          text-align: center;
+        }
+        .text2 {
+          padding-top: 10px;
+          font-size: 30px;
+          text-align: center;
+        }
+        .title {
+          margin: 10% auto;
+        }
+        #date {
+          font-size: 12px;
+        }
     </style>
     <script>
       {% for result in query("get_release_date") %}
@@ -36,14 +78,29 @@
   <body>
     <div class="container">
       <div class="row">
-        {% block content %}
-          <div class="col-md-12">
-            <div class="col-lg-3 col-centered">
-              <h5 id="duration"></h5>
+          <div class="col-md-12 title">
+              <p class="script"><span>Product version X.Y.Z</span></p>
+              <p class="text2">Test Execution Report</p>
+              <p class="script"><span id="date"></span></p>
+          </div>
+          <div class="col-md-6">
+            <div class="col-lg-6 col-centered">
+              <h5>ETA</h5>
+              <br /><br />
+              <h5 class="col-centered" id="duration"></h5>
             </div>
           </div>
           <div class="col-md-6">
-            <div class="col-lg-3 col-centered">
+            <div class="col-lg-6 col-centered">
+              <h5>Progress</h5>
+              <br />
+              <div id="progress"></div>
+              <br />
+            </div>
+          </div>
+        {% block content %}
+          <div class="col-md-6">
+            <div class="col-lg-6 col-centered">
               <h5>Execution status</h5>
             </div>
             <canvas id="execution-status-chart"></canvas>
@@ -79,7 +136,7 @@
             });
           </script>
           <div class="col-md-6">
-            <div class="col-lg-3 col-centered">
+            <div class="col-lg-6 col-centered">
               <h5>Execution history</h5>
             </div>
             <canvas id="execution-history-chart"></canvas>
@@ -118,30 +175,42 @@
             </script>
           </div>
         </div>
+        <br />
         <div class="row">
           <div class="col-md-6">
-            <div class="col-lg-3 col-centered">
+            <div class="col-lg-6 col-centered">
               <h5>Workload status</h5>
             </div>
             <canvas id="assignee-workload-chart"></canvas>
             <script>
-              var _data = [];
+              var actual_data = [];
+              var expected_data = [];
               var _labels = [];
+
+              {% for test_cases_stats in query("get_test_cases_workload") %}
+              var workload = {{ test_cases_stats.total }};
+              {% endfor %}
+
               {% for result in query("get_workload_by_assignee") %}
                 _labels.push('{{result.assignee}}');
-                _data.push({{result.workload}});
+                actual_data.push({{result.workload}});
               {% endfor %}
 
               {% for result in query("get_assignees") %}
                 if($.inArray('{{result.name}}', _labels)==-1) {
                   _labels.push('{{result.name}}');
-                  _data.push(0);
+                  actual_data.push(0);
                 }
               {% endfor %}
 
+              for(idx=0;idx<_labels.length;idx++) {
+                expected_data.push(workload/_labels.length);
+              }
+
               var data = {
                   labels: _labels,
-                  datasets: [{ label: 'Workload (hours)', data: _data}],
+                  datasets: [{ label: 'Actual workload (hours)', data: actual_data, fill: false, borderColor: 'rgba(92, 184, 92, 0.8)'},
+                             { label: 'Ideal workload (hours)', data: expected_data, fill: false, borderColor: 'rgba(240, 173, 78, 0.8)'}],
               };
 
               var chart = new Chart($('#assignee-workload-chart'), {
@@ -153,7 +222,7 @@
             </script>
           </div>
           <div class="col-md-6">
-            <div class="col-lg-3 col-centered">
+            <div class="col-lg-6 col-centered">
               <h5>Workload history</h5>
             </div>
             <canvas id="workload-history-chart"></canvas>
@@ -193,7 +262,7 @@
             </script>
           </div>
         </div>
-
+        <br />
         {% for test_group in query("get_test_groups") %}
         <div class="row">
           <div class="col-md-12">
@@ -258,7 +327,43 @@
             }
         });
 
-        $("#duration").val(duration + " remaining days");
+        $("#duration").text(duration + " day(s) left");
+
+        var date = new Date();
+        date.setHours(0, 0, 0, 0);
+        $("#date").text(date.toDateString())
+
+        var bar = new ProgressBar.SemiCircle('#progress', {
+          strokeWidth: 6,
+          color: '#FFEA82',
+          trailColor: '#eee',
+          trailWidth: 1,
+          easing: 'easeInOut',
+          duration: 1400,
+          svgStyle: null,
+          text: {
+            value: '',
+            alignToBottom: false
+          },
+          from: {color: '#FFEA82'},
+          to: {color: '#ED6A5A'},
+          // Set default step function for all animate calls
+          step: (state, bar) => {
+            bar.path.setAttribute('stroke', state.color);
+            var value = Math.round(bar.value() * 100);
+            if (value === 0) {
+              bar.setText('0%');
+            } else {
+              bar.setText(value + '%');
+            }
+
+            bar.text.style.color = state.color;
+          }
+        });
+        bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+        bar.text.style.fontSize = '2rem';
+
+        bar.animate(workload/(duration*8));
     });
   </script>
 </html>

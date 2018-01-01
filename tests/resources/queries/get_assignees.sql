@@ -1,1 +1,1 @@
-SELECT * FROM assignees;
+SELECT name FROM assignees ORDER by [order];
